@@ -16,7 +16,7 @@ _Note: For Windows users it is recommended to use an Ubuntu 16.04.4 (amd64) Virt
 
 ## Setup
 
-_Note: Detailed instructions on this setup can be found in [AN1144](https://www.silabs.com/documents/public/application-notes/AN1144.pdf)._
+_Note: Detailed instructions on this setup can be found in [AN1144](https://www.silabs.com/documents/public/application-notes/an1144-using-device-mgmt-service-zigbee-gateways.pdf)._
 
 Clone this repo:
 ```
