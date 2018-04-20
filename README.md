@@ -16,7 +16,7 @@ _Note: For Windows users it is recommended to use an Ubuntu 16.04.4 (amd64) Virt
 
 ## Setup
 
-_Note: Detailed instructions on this setup can be found in [AN1144](https://www.silabs.com/documents/public/application-notes/an1144-using-device-mgmt-service-zigbee-gateways.pdf)._
+_Note: Detailed instructions on this setup can be found in [AN1144](https://www.silabs.com/documents/public/application-notes/AN1144.pdf)._
 
 Clone this repo:
 ```
@@ -49,16 +49,23 @@ $ <path/to>/commander flash --masserase \
 
 ### Create a User Account on the DMS
 
-Create a user account for the [Device Management Service](http://gw-demo-dms.zentri.com/signup).
+Create a user account for the [Device Management Service](http://dms.zentri.com/signup).
 
 ### Provision a new Zigbee Gateway Device on the DMS
 
-Once an account is created, login to the DMS and in the Devices section provision a new device as a `NODEJS` device and take note of the UUID and Token provided. For example:
+Once an account is created, login to the DMS and in the Devices section provision a new software device as type `SOFT`, then download the `certificates.zip` and take note of the UUID and Token provided. For example:
 ```
 UUID  fffffffaa24b7ce88d91a6ccf9e54bfb24e904c2
 Token RmwxZ0hhSng2NGxlQkdKbWNCSmZlc0VD
 ```
 This device will be `enabled` until it authenticates with the DMS.
+
+### Deploy the Certificates
+
+The certificates.zip needs to be unzipped into a folder named `certificates` that sits next to the Z3GatewayHost Zigbee gateway executable
+```
+$ unzip <path/to>/certificates.zip -d ./bin/gateway/<os>/certificates
+```
 
 ### Start the Zigbee Gateway
 
@@ -73,7 +80,8 @@ $ sudo adduser <current user> dialout
 
 Run the Zigbee gateway (_Note: If running in Ubuntu, the following command must be prepended by `sudu`_):
 ```
-$ ./bin/gateway/<platform>/Z3GatewayHost -p /dev/tty<platform specific postfix>
+$ cd bin/gateway/<platform>
+$ ./Z3GatewayHost -p /dev/tty<platform specific postfix>
 ```
 
 The gateway application will post some output, and then a `Z3GatewayHost>` prompt signaling it is ready for interaction.
