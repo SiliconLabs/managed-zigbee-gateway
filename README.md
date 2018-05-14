@@ -115,3 +115,73 @@ Z3GatewayHost> plugin network-creator-security close-network
 ```
 
 The Zigbee gateway device on the DMS should have a matching entry for this device in the Nodes section.
+
+### Update a Zigbee End Node
+
+Login to the DMS and in the Devices section choose the gateway device. Then go to the Files section. Find the following files in the repo, and upload them to the DMS:
+```
+<path/to/repo>/bin/firmware/ota-manifest.json
+<path/to/repo>/bin/firmware/ZigbeeEndNode-EFR32MG12P432F1024GL125/ZigbeeEndNode2.ota
+```
+
+Once the files are in the DMS, commands can be issued on the gateway to list OTA files available and stage an OTA firmware file for devices to update from:
+```
+Z3GatewayHost> custom dms-ota-list
+Manifest last updated: 2018-04-30T17:27:52.950Z
+Available images:
+ZigbeeEndNode2.ota
+
+Z3GatewayHost> custom dms-ota-get "ZigbeeEndNode2.ota"
+Downloading OTA image ZigbeeEndNode2.ota
+Completed write of "./ota-files/ZigbeeEndNode2.ota" with size 224106
+Done with OTA image download
+```
+At this point, the `ZigbeeEndNode2.ota` file will be downloaded to the `./ota-files` directory next to the `Z3GatewayHost`. The end node will eventually pick this up when it queries the gateway as an OTA server for updates.
+
+
+An update can be forced on the end node using the following command:
+```
+ZigbeeEndNode> plugin ota-client start
+starting OTA client state machine
+Bootload state: Discovering OTA Server
+ZigbeeEndNode>Processing message: len=6 profile=0000 cluster=8006
+Setting OTA Server to 0x0000
+Bootload state: Get OTA Server EUI
+OTA Cluster: setting IEEE address of OTA cluster
+Last offset downloaded: 0x0003703E
+Found fully downloaded file in storage (version 0x00000002).
+Found file in storage with different version (0x00000002) than current version (0x00000001)
+Last offset downloaded: 0x0003703E
+No signature verification support, assuming image is okay.
+Starting EBL verification
+EBL passed verification.
+Custom verification passed: 0x00
+Bootload state: Waiting for Upgrade message
+Sending Upgrade End request.
+Processing message: len=19 profile=0104 cluster=0019
+T00000000:RX len 19, ep 01, clus 0x0019 (Over the Air Bootloading) FC 19 seq 00 cmd 07 payload[02 10 00 00 02 0 0 00 00 00 00 00 00 00 00 00 00 ]
+OTA Cluster: wait for 0 s
+RXed timeOut 0x00000000 s, MAX timeOut 0x00000DBB s
+Adding 3000 ms. delay for immediate upgrade.
+Countdown to upgrade: 3000 ms
+Bootload state: Countdown to Upgrade
+Applying upgrade
+Executing bootload callback.
+```
+
+To confirm the update occurred, use the following command and verify the `Current Version`  is `0x02`:
+```
+ZigbeeEndNode> plugin ota-client info
+Client image query info
+Manuf ID:         0x1002
+Image Type ID:    0x0000
+Current Version:  0x00000002
+Hardware Version: NA
+Query Delay ms:            300000
+Server Discovery Delay ms: 600000
+Download Delay ms:         0
+Run Upgrade Delay ms:      600000
+Verify Delay ms:           10
+Download Error Threshold:  10
+Upgrade Wait Threshold:    10
+```
