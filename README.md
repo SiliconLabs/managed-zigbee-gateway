@@ -1,3 +1,5 @@
+**Note: This software is deprecated.** It pertains to obsolete reference designs. Customers who do not have prior experience with these reference designs are advised not to attempt to use these extensions.
+
 # Managed Zigbee Gateway
 
 This repository contains the software needed to bring up a Managed Zigbee Gateway.
